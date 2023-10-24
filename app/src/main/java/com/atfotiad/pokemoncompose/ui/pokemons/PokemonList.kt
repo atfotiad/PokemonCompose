@@ -12,13 +12,16 @@ import com.atfotiad.pokemoncompose.model.Pokemon
 fun PokemonList(
     modifier: Modifier = Modifier,
     list: LazyPagingItems<Pokemon>,
-    onPokemonClick: () -> Unit
+    onClick: (Pokemon) -> Unit
 ) {
-    LazyColumn(modifier
-        ) {
-        items(count = list.itemCount) {index->
+    LazyColumn(
+        modifier
+    ) {
+        items(count = list.itemCount) { index ->
             val pokemon = list[index]!!
-            PokemonItem(pokemonName = pokemon.name, onPokemonClick = { onPokemonClick() })
+            PokemonItem(pokemon = pokemon, onPokemonClick = {
+                onClick(pokemon)
+            })
             Divider()
         }
     }
