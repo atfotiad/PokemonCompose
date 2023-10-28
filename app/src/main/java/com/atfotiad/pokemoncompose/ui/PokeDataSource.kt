@@ -19,27 +19,31 @@ class PokeDataSource(
         val limit = params.key?.limit ?: initialPokePageIndex.limit
         val offset = params.key?.offset ?: initialPokePageIndex.offset
 
-        val finalPokeList :ArrayList<Pokemon> = ArrayList()
+        val finalPokeList: ArrayList<Pokemon> = ArrayList()
         return try {
             val response = pokeApi.getAllPokemon(offset, limit)
             val pokemonList = response.body()?.results ?: ArrayList()
 
-            for (pokemon :Result in pokemonList){
+            for (pokemon: Result in pokemonList) {
 
-                val tokens =  pokemon.url.split("/")
-                for (token:String in tokens){
+                val tokens = pokemon.url.split("/")
+                for (token: String in tokens) {
                     Log.d("token", "load: $token")
                 }
-                val id = tokens[tokens.lastIndex-1].toInt()
-                val details =pokeApi.getPokemonInfo(id)
+                val id = tokens[tokens.lastIndex - 1].toInt()
+                val details = pokeApi.getPokemonInfo(id)
                 val pokedexEntryText = pokeApi.getSpeciesEntry(id)
                 details.body()?.pokeDexEntry =
                     pokedexEntryText.body()?.flavorTextEntries?.firstOrNull {
                         it.language.name == "en"
                     }?.flavorText.toString()
-                Log.d("pokemonList", "load: "+ (pokemon.name ))
-                Log.d("pokemonList", "load: "+ (details.body()?.pokeDexEntry ))
-                Log.d("pokemonList", "load: image URL: "+ (details.body()?.sprites?.other?.officialArtwork?.frontDefault))
+                Log.d("pokemonList", "load: " + (pokemon.name))
+                Log.d("pokemonList", "load: " + (details.body()?.pokeDexEntry))
+                Log.d(
+                    "pokemonList",
+                    "load: image URL: " + (details.body()?.sprites?.other?.officialArtwork?.frontDefault)
+                )
+                Log.d("pokemonList", "load: "+ details.body()?.types)
                 finalPokeList.add(details.body()!!)
             }
 
