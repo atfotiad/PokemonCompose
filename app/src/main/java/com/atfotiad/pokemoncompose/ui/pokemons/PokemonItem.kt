@@ -38,9 +38,8 @@ fun PokemonItem(
             .clickable { onPokemonClick(pokemon) },
         elevation = CardDefaults.cardElevation(),
         colors = CardDefaults.cardColors(),
-        shape = RoundedCornerShape(50.dp),
-
-        ) {
+        shape = RoundedCornerShape(15.dp)
+    ) {
         Row(modifier = modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             GlideImage(
                 model = pokemon.sprites.other.officialArtwork.frontDefault,
@@ -55,7 +54,9 @@ fun PokemonItem(
             Text(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 16.dp), text = pokemon.name, textAlign = TextAlign.Center
+                    .padding(start = 16.dp),
+                text = pokemon.name,
+                textAlign = TextAlign.Center
             )
             Icon(Icons.Filled.ArrowForward, contentDescription = "Click")
         }
