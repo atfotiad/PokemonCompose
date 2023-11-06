@@ -69,8 +69,14 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation ("androidx.compose.material:material-icons-extended")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation ("androidx.navigation:navigation-compose:2.7.4")
+    implementation ("androidx.navigation:navigation-compose:2.7.5")
+    implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.camera:camera-camera2:1.4.0-alpha02")
+    implementation("androidx.camera:camera-lifecycle:1.4.0-alpha02")
+    implementation("androidx.camera:camera-view:1.4.0-alpha02")
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -89,4 +95,9 @@ dependencies {
 }
 kapt {
     correctErrorTypes = true
+}
+tasks {
+    withType<JavaCompile> {
+        options.compilerArgs.add("-Xlint:deprecation")
+    }
 }
