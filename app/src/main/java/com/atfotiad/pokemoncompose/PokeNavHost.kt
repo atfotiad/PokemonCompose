@@ -11,8 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.atfotiad.pokemoncompose.model.Pokemon
 import com.atfotiad.pokemoncompose.ui.PokemonViewModel
+import com.atfotiad.pokemoncompose.ui.pokemons.CameraScreen
 import com.atfotiad.pokemoncompose.ui.pokemons.PokemonDetailsScreen
 import com.atfotiad.pokemoncompose.ui.pokemons.PokemonScreen
+import com.atfotiad.pokemoncompose.ui.pokemons.WhoisThatPokemon
 
 @Composable
 fun PokeNavHost(
@@ -49,6 +51,16 @@ fun PokeNavHost(
                 PokemonDetailsScreen(pokemon = pokemonFromViewModel)
             }
         }
+        composable(route = RequestFromContentUriScreen.route) {
+            WhoisThatPokemon {
+                navController.navigateSingleTopTo(CameraScreen.route)
+            }
+        }
+
+        composable(route = CameraScreen.route) {
+            CameraScreen()
+        }
+
     }
 }
 
@@ -56,7 +68,7 @@ fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) 
     popUpTo(
         this@navigateSingleTopTo.graph.findStartDestination().id
     ) {
-        saveState = true
+        saveState = false
     }
     launchSingleTop = true
     restoreState = true
