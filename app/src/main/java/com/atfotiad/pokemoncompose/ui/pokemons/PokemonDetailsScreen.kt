@@ -1,5 +1,6 @@
 package com.atfotiad.pokemoncompose.ui.pokemons
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -28,6 +30,9 @@ fun PokemonDetailsScreen(
     modifier: Modifier = Modifier,
     pokemon: Pokemon
 ) {
+    LaunchedEffect(pokemon) {
+        Log.i("pokemon", "SinglePokemon: ${pokemon.name}")
+    }
     SinglePokemon(pokemon, modifier)
 }
 
@@ -40,7 +45,6 @@ fun SinglePokemon(pokemon: Pokemon, modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(),
         shape = RoundedCornerShape(30.dp),
     ) {
-
         Column(modifier.padding(16.dp)) {
             GlideImage(
                 model = pokemon.sprites.other.officialArtwork.frontDefault,
