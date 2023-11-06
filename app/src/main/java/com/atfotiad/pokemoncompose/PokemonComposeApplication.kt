@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.atfotiad.pokemoncompose.ui.PokemonViewModel
+import com.atfotiad.pokemoncompose.ui.components.PokemonTabRow
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -25,18 +26,24 @@ class PokemonComposeApplication : Application() {
         @Composable
         fun PokeApp() {
             Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
+                modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
             ) {
                 val navController = rememberNavController()
                 val currentBackStack by navController.currentBackStackEntryAsState()
                 val viewModel: PokemonViewModel = hiltViewModel()
                 val currentDestination = currentBackStack?.destination
-                Scaffold { innerPadding ->
+                val currentScreen =
+                    pokemonTabRowScreens.find { it.route == currentDestination?.route }
+                        ?: SinglePokemonScreen
+                Scaffold(bottomBar = {
+                    PokemonTabRow(
+                        allScreens = pokemonTabRowScreens,
+                        onTabSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
+                        currentScreen = currentScreen
+                    )
+                }) { innerPadding ->
                     PokeNavHost(
-                        navController = navController,
-                        viewModel,
-                        Modifier.padding(innerPadding)
+                        navController = navController, viewModel, Modifier.padding(innerPadding)
                     )
                 }
             }
