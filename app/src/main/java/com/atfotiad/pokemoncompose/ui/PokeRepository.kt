@@ -3,12 +3,18 @@ package com.atfotiad.pokemoncompose.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.atfotiad.pokemoncompose.api.PokeClient
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Inject
 
-class PokeRepository @Inject constructor(private val pokeClient: PokeClient) {
+@ActivityRetainedScoped
+class PokeRepository @Inject constructor(
+    private val pokeClient: PokeClient,
+    val localDataSource: LocalDataSource
+) {
 
     init {
         client = pokeClient
+        local = localDataSource
     }
 
     fun getPokeResults() =
@@ -24,9 +30,10 @@ class PokeRepository @Inject constructor(private val pokeClient: PokeClient) {
     companion object {
         private var instance: PokeRepository? = null
         private lateinit var client: PokeClient
+        private lateinit var local: LocalDataSource
 
         fun getInstance(): PokeRepository = synchronized(this) {
-            instance ?: PokeRepository(client).also { instance = it }
+            instance ?: PokeRepository(client, local).also { instance = it }
         }
     }
 }
