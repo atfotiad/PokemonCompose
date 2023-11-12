@@ -2,6 +2,7 @@ package com.atfotiad.pokemoncompose
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -35,8 +36,11 @@ object RequestFromContentUriScreen : PokemonDestination {
 object CameraScreen: PokemonDestination {
     override val icon: ImageVector = Icons.Filled.CameraAlt
     override val route: String = "Camera"
-
-
 }
 
-val pokemonTabRowScreens = listOf(PokemonList, RequestFromContentUriScreen)
+object MySquadScreen: PokemonDestination {
+    override val icon: ImageVector = Icons.Filled.Group
+    override val route: String = "SquadList"
+}
+
+val pokemonTabRowScreens = listOf(PokemonList, RequestFromContentUriScreen, MySquadScreen)
