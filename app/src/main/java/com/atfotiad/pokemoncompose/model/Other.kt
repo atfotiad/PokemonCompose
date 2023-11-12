@@ -1,7 +1,8 @@
 package com.atfotiad.pokemoncompose.model
 
+import androidx.room.Embedded
 import com.google.gson.annotations.SerializedName
 
 data class Other(
-    @SerializedName("official-artwork") val officialArtwork: OfficialArtwork
+    @Embedded @SerializedName("official-artwork") val officialArtwork: OfficialArtwork
 )

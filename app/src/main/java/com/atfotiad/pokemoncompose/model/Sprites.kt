@@ -1,5 +1,7 @@
 package com.atfotiad.pokemoncompose.model
 
+import androidx.room.Embedded
+
 data class Sprites(
-    val other: Other
+    @Embedded("other_") val other: Other
 )
