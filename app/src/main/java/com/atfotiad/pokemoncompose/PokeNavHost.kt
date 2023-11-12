@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,6 +13,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.atfotiad.pokemoncompose.model.Pokemon
 import com.atfotiad.pokemoncompose.ui.PokemonViewModel
 import com.atfotiad.pokemoncompose.ui.pokemons.CameraScreen
+import com.atfotiad.pokemoncompose.ui.pokemons.MySquadScreen
 import com.atfotiad.pokemoncompose.ui.pokemons.PokemonDetailsScreen
 import com.atfotiad.pokemoncompose.ui.pokemons.PokemonScreen
 import com.atfotiad.pokemoncompose.ui.pokemons.WhoisThatPokemon
@@ -43,12 +45,15 @@ fun PokeNavHost(
             LaunchedEffect("log") {
                 Log.i("viewModel", "PokeNavHost: $viewModel ")
             }
+
             val pokemonFromViewModel =
                 viewModel.pokemonList.collectAsLazyPagingItems().itemSnapshotList.items.find {
                     it.name == pokemonName
-                }
+                } ?: viewModel.getAllPokemonFromDatabase()
+                    .collectAsStateWithLifecycle(initialValue = listOf()).value.find { it.name == pokemonName }
+            Log.i("SinglePoke", "PokeNavHost: selected pokemon is: $pokemonFromViewModel")
             if (pokemonFromViewModel != null) {
-                PokemonDetailsScreen(pokemon = pokemonFromViewModel)
+                PokemonDetailsScreen(viewModel = viewModel, pokemon = pokemonFromViewModel)
             }
         }
         composable(route = RequestFromContentUriScreen.route) {
@@ -61,6 +66,12 @@ fun PokeNavHost(
             CameraScreen()
         }
 
+        composable(route = MySquadScreen.route) {
+            MySquadScreen(pokemonViewModel = viewModel) { pokemon ->
+                Log.i("toSingle", "PokeNavHost: from DB selectedPokemon is: $pokemon")
+                navController.navigateToSinglePokemon(pokemon)
+            }
+        }
     }
 }
 
@@ -75,5 +86,6 @@ fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) 
 }
 
 private fun NavHostController.navigateToSinglePokemon(pokemon: Pokemon) {
+    Log.i("toSingle", "navigateToSinglePokemon with Pokemon: $pokemon")
     this.navigateSingleTopTo("${SinglePokemonScreen.route}/${pokemon.name}")
 }
